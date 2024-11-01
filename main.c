@@ -1,6 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Welcome to a very glamorous project of a student that
+// till this day fucks up every CS exam.
+// This is basically a visual representation that the human
+// brain is not only used only in 11% of it's total capacity,
+// but can go even lower.
+//
+// Enjoy <3
+//
+// https://github.com/MartinJezko
+
 
 int optionMenu() {
     
@@ -65,6 +75,7 @@ int optionMenu() {
 }
 
 // MATRIX INITIALIZATION / DESTRUCTION   
+// Allocates desired memory space for the matrix
 int **matrix(int rows, int cols) {
     
     int **m = malloc(sizeof(int*) * rows);
@@ -76,6 +87,7 @@ int **matrix(int rows, int cols) {
     
 }
 
+// Fills matrix with values
 void fillMatrix(int **matrix, int rows, int cols) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
@@ -85,6 +97,7 @@ void fillMatrix(int **matrix, int rows, int cols) {
     }
 }
 
+// Prints out the matrix in an actually readable way
 void printMatrix(int **matrix, int rows, int cols) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
@@ -94,6 +107,7 @@ void printMatrix(int **matrix, int rows, int cols) {
     }
 }
 
+// Destroys the matrix and frees the memory allocated to it
 void matrixDtor(int **matrix, int rows) {
     for (int i = 0; i < rows; i++) {
         free(matrix[i]);
@@ -103,23 +117,23 @@ void matrixDtor(int **matrix, int rows) {
 
 // OPERATIONS WITH 2 MATRIXES
 int sumMatrixes() {
-    int rA, cA, rB, cB;
+    int rA, cA, rB, cB; // Initialize rows and collumns for 2 matrixes A and B
     printf("Select number of rows of matrix A: ");
     scanf("%d", &rA);
     printf("Select number of collumns of matrix A: ");
     scanf("%d", &cA);
-
 
     printf("Select number of rows of matrix B: ");
     scanf("%d", &rB);
     printf("Select number of collumns of matrix B: ");
     scanf("%d", &cB);
 
-    if (rA != rB || cA != cB) {
+    if (rA != rB || cA != cB) { // Check whether they have the same dimension lengths
         printf("Can't sum these 2 matrixes (need to have same dimensions)\n");
         return 1;
     }
 
+    // Inititializes and adds values to matrixes A and B
     int **matrixA = matrix(rA, cA);
     printf("Fill A:\n");
     fillMatrix(matrixA, rA, cA);
@@ -132,6 +146,7 @@ int sumMatrixes() {
     printf("\n (B) \n");
     printMatrix(matrixB, rB, cB);
 
+    // Creates third matrix "sum" and adds values (a + b)
     int **sum = matrix(rA, cA);
     for (int i = 0; i < rA; i++) {
         for (int j = 0; j < cA; j++) {
@@ -139,11 +154,16 @@ int sumMatrixes() {
         }
     }
 
+    // Frees matrixes A and B
     matrixDtor(matrixA, rA);
     matrixDtor(matrixB, rB);
     
+    // Prints out final SUM matrix
     printf("\n=== RESULT ===\n");
     printMatrix(sum, rA, cA);
+
+    // Frees the SUM matrix as well, because honestly I don't know
+    // How to do it outside the function and i dont give a fuck
     matrixDtor(sum, rA);
 
     return 0;
@@ -184,10 +204,6 @@ int main() {
                 break;
 
         }
-
-
-
-
     }
 
     return 0;
