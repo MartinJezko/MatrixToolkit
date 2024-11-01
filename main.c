@@ -8,7 +8,7 @@ int optionMenu() {
 
     printf("Select option: (0 for exit)\n");
     printf("1) Solve matrix\n");
-    printf("2) Oprerations with 2 matrixes\n");
+    printf("2) Operations with 2 matrixes\n");
     scanf("%d", &opt);
     if (opt == 1) {
         printf("\n");
@@ -94,12 +94,61 @@ void printMatrix(int **matrix, int rows, int cols) {
     }
 }
 
-void matrixDtor(int **matrix) {
+void matrixDtor(int **matrix, int rows) {
+    for (int i = 0; i < rows; i++) {
+        free(matrix[i]);
+    }
     free(matrix);
 }
 
 // OPERATIONS WITH 2 MATRIXES
+int sumMatrixes() {
+    int rA, cA, rB, cB;
+    printf("Select number of rows of matrix A: ");
+    scanf("%d", &rA);
+    printf("Select number of collumns of matrix A: ");
+    scanf("%d", &cA);
 
+
+    printf("Select number of rows of matrix B: ");
+    scanf("%d", &rB);
+    printf("Select number of collumns of matrix B: ");
+    scanf("%d", &cB);
+
+    if (rA != rB || cA != cB) {
+        printf("Can't sum these 2 matrixes (need to have same dimensions)\n");
+        return 1;
+    }
+
+    int **matrixA = matrix(rA, cA);
+    printf("Fill A:\n");
+    fillMatrix(matrixA, rA, cA);
+    int **matrixB = matrix(rB, cB);
+    printf("Fill B:\n");
+    fillMatrix(matrixB, rB, cB);
+
+    printf("\n (A) \n");
+    printMatrix(matrixA, rA, cA);
+    printf("\n (B) \n");
+    printMatrix(matrixB, rB, cB);
+
+    int **sum = matrix(rA, cA);
+    for (int i = 0; i < rA; i++) {
+        for (int j = 0; j < cA; j++) {
+            sum[i][j] = matrixA[i][j] + matrixB[i][j];
+        }
+    }
+
+    matrixDtor(matrixA, rA);
+    matrixDtor(matrixB, rB);
+    
+    printf("\n=== RESULT ===\n");
+    printMatrix(sum, rA, cA);
+    matrixDtor(sum, rA);
+
+    return 0;
+
+}
 
 int main() {
 
@@ -118,19 +167,20 @@ int main() {
                 printf("\nLeaving...\n");   // Exit program
                 return 0;
             case 11:    // (and below) - Self explanatory
-                printf("\nFIND DETERMINANT OF A MATRIX\n");
+                printf("\nFIND DETERMINANT OF A MATRIX\n\n");
                 break;
             case 12:
-                printf("\nSOLVE SYSTEM OF EQUATIONS\n");
+                printf("\nSOLVE SYSTEM OF EQUATIONS\n\n");
                 break;
             case 21:
-                printf("\nSUM OF MATRIXES (A+B)\n");
+                printf("\nSUM OF MATRIXES (A+B)\n\n");
+                return sumMatrixes();
                 break;
             case 22:
-                printf("\nSUBSTRACTION OF MATRIXES (A-B)\n");
+                printf("\nSUBSTRACTION OF MATRIXES (A-B)\n\n");
                 break;
             case 23:
-                printf("\nMULTIPLICATION OF MATRIXES (A x B)\n");
+                printf("\nMULTIPLICATION OF MATRIXES (A x B)\n\n");
                 break;
 
         }
