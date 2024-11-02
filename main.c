@@ -159,8 +159,9 @@ int sumMatrixes() {
     matrixDtor(matrixB, rB);
     
     // Prints out final SUM matrix
-    printf("\n=== RESULT ===\n");
+    printf("\n=== A + B = ===\n");
     printMatrix(sum, rA, cA);
+    printf("\n");
 
     // Frees the SUM matrix as well, because honestly I don't know
     // How to do it outside the function and i dont give a fuck
@@ -168,6 +169,100 @@ int sumMatrixes() {
 
     return 0;
 
+}
+
+int substractMatrixes() {
+    int rA, cA, rB, cB; // Initialize rows and collumns for 2 matrixes A and B
+    printf("Select number of rows of matrix A: ");
+    scanf("%d", &rA);
+    printf("Select number of collumns of matrix A: ");
+    scanf("%d", &cA);
+
+    printf("Select number of rows of matrix B: ");
+    scanf("%d", &rB);
+    printf("Select number of collumns of matrix B: ");
+    scanf("%d", &cB);
+
+    if (rA != rB || cA != cB) { // Check whether they have the same dimension lengths
+        printf("Can't sum these 2 matrixes (need to have same dimensions)\n");
+        return 1;
+    }
+
+    // Inititializes and adds values to matrixes A and B
+    int **matrixA = matrix(rA, cA);
+    printf("Fill A:\n");
+    fillMatrix(matrixA, rA, cA);
+    int **matrixB = matrix(rB, cB);
+    printf("Fill B:\n");
+    fillMatrix(matrixB, rB, cB);
+
+    printf("\n (A) \n");
+    printMatrix(matrixA, rA, cA);
+    printf("\n (B) \n");
+    printMatrix(matrixB, rB, cB);
+
+    // Creates third matrix "subs" and adds values (a - b)
+    int **subs = matrix(rA, cA);
+    for (int i = 0; i < rA; i++) {
+        for (int j = 0; j < cA; j++) {
+            subs[i][j] = matrixA[i][j] - matrixB[i][j];
+        }
+    }
+
+    // Frees matrixes A and B
+    matrixDtor(matrixA, rA);
+    matrixDtor(matrixB, rB);
+    
+    // Prints out final SUM matrix
+    printf("\n=== A - B = ===\n");
+    printMatrix(subs, rA, cA);
+    printf("\n");
+
+    // Frees the SUBSTRACTION matrix as well, because honestly I don't know
+    // How to do it outside the function and i dont give a fuck
+    matrixDtor(subs, rA);
+
+    return 0;
+}
+
+int multiplyMatrixes() {
+
+    int rA, cA, rB, cB; // Initialize rows and collumns for 2 matrixes A and B
+    printf("Select number of rows of matrix A: ");
+    scanf("%d", &rA);
+    printf("Select number of collumns of matrix A: ");
+    scanf("%d", &cA);
+
+    printf("Select number of rows of matrix B: ");
+    scanf("%d", &rB);
+    printf("Select number of collumns of matrix B: ");
+    scanf("%d", &cB);
+
+    if (cA != rB) { // cA x rB --> m_A x n_B
+        printf("Num. of collumns in A needs to equal the number of rows in B\n");
+        return 1;
+    }
+
+    int **matrixA = matrix(rA, cA);
+    printf("Fill A:\n");
+    fillMatrix(matrixA, rA, cA);
+    int **matrixB = matrix(rB, cB);
+    printf("Fill B\n");
+    fillMatrix(matrixB, rB, cB);
+    
+    printf("\n (A) \n");
+    printMatrix(matrixA, rA, cA);
+    printf("\n (B) \n");
+    printMatrix(matrixB, rB, cB);
+
+    //  cB x rA --> m_M x n_M
+    int **multi = matrix(rA, cB);   // Basically a result matrix
+
+    matrixDtor(matrixA, rA);
+    matrixDtor(matrixB, rB);
+    matrixDtor(multi, rA);
+
+    return 0;
 }
 
 int main() {
@@ -198,9 +293,11 @@ int main() {
                 break;
             case 22:
                 printf("\nSUBSTRACTION OF MATRIXES (A-B)\n\n");
+                return substractMatrixes();
                 break;
             case 23:
                 printf("\nMULTIPLICATION OF MATRIXES (A x B)\n\n");
+                return multiplyMatrixes();
                 break;
 
         }
