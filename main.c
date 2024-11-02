@@ -24,6 +24,7 @@ int optionMenu() {
         printf("\n");
         printf("1) Find determinant\n");    // 11
         printf("2) Solve {x, y, z}\n");     // 12
+        printf("3) Find transponed matrix\n");
         scanf("%d", &opt);
         switch (opt) {
             case 1:
@@ -31,6 +32,9 @@ int optionMenu() {
                 break;
             case 2:
                 return 12;
+                break;
+            case 3:
+                return 13;
                 break;
             case 0:
                 return -2;
@@ -258,6 +262,19 @@ int multiplyMatrixes() {
     //  cB x rA --> m_M x n_M
     int **multi = matrix(rA, cB);   // Basically a result matrix
 
+    // multiplication magic :3
+    for (int i = 0; i < rA; i++) {
+        for (int j = 0; j < cB; j++) {
+            for (int k = 0; k < cA; k++) {
+                multi[i][j] += matrixA[i][k] * matrixB[k][j];
+            }
+        }
+    }
+
+    
+    printf("\n=== A * B = ===\n");
+    printMatrix(multi, rA, cB);
+
     matrixDtor(matrixA, rA);
     matrixDtor(matrixB, rB);
     matrixDtor(multi, rA);
@@ -286,6 +303,9 @@ int main() {
                 break;
             case 12:
                 printf("\nSOLVE SYSTEM OF EQUATIONS\n\n");
+                break;
+            case 13:
+                printf("\nFIND TRANSPONED MATRIX\n\n");
                 break;
             case 21:
                 printf("\nSUM OF MATRIXES (A+B)\n\n");
