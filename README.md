@@ -1,3 +1,4 @@
+![Header banner](banner.png)
 
 # MatrixToolkit
 ##### by: Martin Ježko
