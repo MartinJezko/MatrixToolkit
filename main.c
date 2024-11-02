@@ -16,7 +16,7 @@ int optionMenu() {
     
     int opt;
 
-    printf("Select option: (0 for exit)\n");
+    printf("\nSelect option: (0 for exit)\n");
     printf("1) Solve matrix\n");
     printf("2) Operations with 2 matrixes\n");
     scanf("%d", &opt);
@@ -117,6 +117,41 @@ void matrixDtor(int **matrix, int rows) {
         free(matrix[i]);
     }
     free(matrix);
+}
+
+// SOLVE MATRIX
+int findDeterminant() {
+    int dim;
+    printf("Enter the dimension (m = n) of matrix:");
+    scanf("%d", &dim);
+    int **m = matrix(dim, dim);
+    fillMatrix(m, dim, dim);
+    printf("\n (Entered matrix) \n");
+    printMatrix(m, dim, dim);
+
+    int determinant;
+
+    // Solve determinant for 2x2
+    if (dim == 2) {     
+        determinant = m[0][0]*m[1][1] - m[1][0]*m[0][1];
+    }
+    // Solve determinant for 3x3
+    else if (dim == 3) {
+        determinant = m[0][0]*m[1][1]*m[2][2] + m[1][0]*m[2][1]*m[0][2] + m[2][0]*m[0][1]*m[1][2];
+        determinant -= m[2][0]*m[1][1]*m[0][2] + m[2][1]*m[1][2]*m[0][0] + m[2][2]*m[1][0]*m[0][1];
+    }
+    // Solve determinant for 4x4 and more...
+    // (Laplaceo's developement)
+    else {
+        printf("I can't count with higher dimensions (yet)\n");
+        return 1;
+    }
+
+    printf("\n=== D ===\n");
+    printf("Determinant = %d\n", determinant);
+
+    matrixDtor(m, dim);
+    return 0;
 }
 
 // OPERATIONS WITH 2 MATRIXES
@@ -300,6 +335,7 @@ int main() {
                 return 0;
             case 11:    // (and below) - Self explanatory
                 printf("\nFIND DETERMINANT OF A MATRIX\n\n");
+                findDeterminant();
                 break;
             case 12:
                 printf("\nSOLVE SYSTEM OF EQUATIONS\n\n");
@@ -309,15 +345,15 @@ int main() {
                 break;
             case 21:
                 printf("\nSUM OF MATRIXES (A+B)\n\n");
-                return sumMatrixes();
+                sumMatrixes();
                 break;
             case 22:
                 printf("\nSUBSTRACTION OF MATRIXES (A-B)\n\n");
-                return substractMatrixes();
+                substractMatrixes();
                 break;
             case 23:
                 printf("\nMULTIPLICATION OF MATRIXES (A x B)\n\n");
-                return multiplyMatrixes();
+                    multiplyMatrixes();
                 break;
 
         }

@@ -13,6 +13,7 @@ By the time I will try to add more and more functions so It will actually be hel
 - `1) Solve matrix` to find solution to a single matrix / system of equations:
 	- `1) Find determinant` to find a determinant of a matrix ( | A | ).
 	- `2) Solve {x, y, z}` to solve  a system of equations.
+	- `3) Find transponed matrix` to find a matrix that's transponed to the entered one.
 - `2) Operations with 2 matrixes` to sum | substract | multiply 2 different matrixes:
 	- `1) A + B` to sum 2 matrixes (make sure they have the same dimensions).
 	- `2) A - B` to substract second matrix from the first (need to have same dimensions as well).
