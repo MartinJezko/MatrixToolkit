@@ -158,7 +158,7 @@ int findDeterminant() {
 // Find determinant for 4x4 (+)
 // Solve system of equations
 
-int findTransponedMatrix() {
+int findTransposedMatrix() {
     int rows;
     int cols;
     printf("Enter num. of rows in matrix:");
@@ -369,8 +369,8 @@ int main() {
                 printf("\nSOLVE SYSTEM OF EQUATIONS\n\n");
                 break;
             case 13:
-                printf("\nFIND TRANSPONED MATRIX\n\n");
-                findTransponedMatrix();
+                printf("\nFIND TRANSPOSED MATRIX\n\n");
+                findTransposedMatrix();
                 break;
             case 21:
                 printf("\nSUM OF MATRIXES (A+B)\n\n");
