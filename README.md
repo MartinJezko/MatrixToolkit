@@ -7,6 +7,14 @@ This is a project I'm working on while studying CS, so I can improve my understa
 By the time I will try to add more and more functions so It will actually be helpful.
 
 ## User Guide
+### Installation
+- On linux:
+	- Locate to the desired folder you want to install in and type: `git clone https://github.com/MartinJezko/MatrixToolkit`
+- On windows:
+	- Download the folder and try to run the `.exe` file if there even is any idk
+
+---
+
 ### Using application
 - In your terminal locate to the folder and launch by tiping  `./matrixtk`
 - Select an option by typing a number:

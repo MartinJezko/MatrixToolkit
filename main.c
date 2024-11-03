@@ -154,6 +154,34 @@ int findDeterminant() {
     return 0;
 }
 
+// TODO
+// Find determinant for 4x4 (+)
+// Solve system of equations
+
+int findTransponedMatrix() {
+    int rows;
+    int cols;
+    printf("Enter num. of rows in matrix:");
+    scanf("%d", &rows);
+    printf("Enter num. of collumns in matrix:");
+    scanf("%d", &cols);
+    int **m = matrix(rows, cols);
+    fillMatrix(m, rows, cols);
+    printf("\n (Entered matrix) \n");
+    printMatrix(m, rows, cols);
+
+    int **t = matrix(cols, rows);   // Transponed matrix
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            t[j][i] = m[i][j];
+        }
+    }
+    printf("\n (Transponed matrix) \n");
+    printMatrix(t, cols, rows);
+
+    return 0;
+}
+
 // OPERATIONS WITH 2 MATRIXES
 int sumMatrixes() {
     int rA, cA, rB, cB; // Initialize rows and collumns for 2 matrixes A and B
@@ -342,6 +370,7 @@ int main() {
                 break;
             case 13:
                 printf("\nFIND TRANSPONED MATRIX\n\n");
+                findTransponedMatrix();
                 break;
             case 21:
                 printf("\nSUM OF MATRIXES (A+B)\n\n");
