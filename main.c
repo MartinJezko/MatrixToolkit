@@ -11,7 +11,10 @@
 // Enjoy <3
 //
 // https://github.com/MartinJezko
-
+void clrscr()
+{
+    system("@cls||clear");
+}
 
 int optionMenu() {
     
@@ -105,10 +108,13 @@ void fillMatrix(int **matrix, int rows, int cols) {
 // Prints out the matrix in an actually readable way
 void printMatrix(int **matrix, int rows, int cols) {
     for (int i = 0; i < rows; i++) {
+        printf("|\t");
         for (int j = 0; j < cols; j++) {
             printf("%d\t", matrix[i][j]);
         }
-        printf("\n\n");
+        printf("|");
+        printf("\n");
+        printf("\n");
     }
 }
 
@@ -146,7 +152,7 @@ int findDeterminant() {
         determinant = m[0][0]*m[1][1]*m[2][2] + m[1][0]*m[2][1]*m[0][2] + m[2][0]*m[0][1]*m[1][2];
         determinant -= m[2][0]*m[1][1]*m[0][2] + m[2][1]*m[1][2]*m[0][0] + m[2][2]*m[1][0]*m[0][1];
     }
-    // Solve determinant for 4x4 and more...
+    // Solve determinant for 4x4
     // (Laplaceo's developement)
     else if (dim == 4) {
         for (int c = 0; c < 4; c++) {
@@ -185,7 +191,6 @@ int findDeterminant() {
 }
 
 // TODO
-// Find determinant for 4x4 (+)
 // Solve system of equations
 
 int findTransposedMatrix() {
@@ -376,7 +381,6 @@ int multiplyMatrixes() {
 }
 
 int main() {
-
     int option;
 
     while (1) {
@@ -386,31 +390,38 @@ int main() {
         // Controls right menu option
         switch (option) {
             case -1:
+                clrscr();
                 fprintf(stderr, "!!! Please choose a right option\n");  // Wrong option
                 break;
             case -2:
                 printf("\nLeaving...\n");   // Exit program
                 return 0;
             case 11:    // (and below) - Self explanatory
+                clrscr();
                 printf("\nFIND DETERMINANT OF A MATRIX\n\n");
                 findDeterminant();
                 break;
             case 12:
+                clrscr();
                 printf("\nSOLVE SYSTEM OF EQUATIONS\n\n");
                 break;
             case 13:
+                clrscr();
                 printf("\nFIND TRANSPOSED MATRIX\n\n");
                 findTransposedMatrix();
                 break;
             case 21:
+                clrscr();
                 printf("\nSUM OF MATRIXES (A+B)\n\n");
                 sumMatrixes();
                 break;
             case 22:
+                clrscr();
                 printf("\nSUBSTRACTION OF MATRIXES (A-B)\n\n");
                 substractMatrixes();
                 break;
             case 23:
+                clrscr();
                 printf("\nMULTIPLICATION OF MATRIXES (A x B)\n\n");
                     multiplyMatrixes();
                 break;
