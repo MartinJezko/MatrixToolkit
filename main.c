@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 // Welcome to a very glamorous project of a student that
 // till this day fucks up every CS exam.
@@ -105,9 +106,9 @@ void fillMatrix(int **matrix, int rows, int cols) {
 void printMatrix(int **matrix, int rows, int cols) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            printf("%d ", matrix[i][j]);
+            printf("%d\t", matrix[i][j]);
         }
-        printf("\n");
+        printf("\n\n");
     }
 }
 
@@ -124,12 +125,17 @@ int findDeterminant() {
     int dim;
     printf("Enter the dimension (m = n) of matrix:");
     scanf("%d", &dim);
+    if (dim >= 5) {
+        printf("Can't find determinant for higher than 4 (yet)\n");
+        return 1;
+    }
+
     int **m = matrix(dim, dim);
     fillMatrix(m, dim, dim);
     printf("\n (Entered matrix) \n");
     printMatrix(m, dim, dim);
 
-    int determinant;
+    int determinant = 0;
 
     // Solve determinant for 2x2
     if (dim == 2) {     
@@ -142,6 +148,30 @@ int findDeterminant() {
     }
     // Solve determinant for 4x4 and more...
     // (Laplaceo's developement)
+    else if (dim == 4) {
+        for (int c = 0; c < 4; c++) {
+            if (c == 0) {
+                determinant += pow(-1, (c+1)+1)*m[0][c] * 
+                (m[1][1]*m[2][2]*m[3][3] + m[2][1]*m[3][2]*m[1][3] + m[3][1]*m[1][2]*m[2][3]
+                - m[3][1]*m[2][2]*m[1][3] - m[2][1]*m[1][2]*m[3][3] - m[1][1]*m[3][2]*m[2][3]);
+            }
+            else if (c == 1) {
+                determinant += pow(-1, (c+1)+1)*m[0][c] * 
+                (m[1][0]*m[2][2]*m[3][3] + m[2][0]*m[3][2]*m[1][3] + m[3][0]*m[1][2]*m[2][3]
+                - m[3][0]*m[2][2]*m[1][3] - m[2][0]*m[1][2]*m[3][3] - m[1][0]*m[3][2]*m[2][3]);
+            }
+            else if (c == 2) {
+                determinant += pow(-1, (c+1)+1)*m[0][c] * 
+                (m[1][0]*m[2][1]*m[3][3] + m[2][0]*m[3][1]*m[1][3] + m[3][0]*m[1][1]*m[2][3]
+                - m[3][0]*m[2][1]*m[1][3] - m[2][0]*m[1][1]*m[3][3] - m[1][0]*m[3][1]*m[2][3]);
+            }
+            else if (c == 3) {
+                determinant += pow(-1, (c+1)+1)*m[0][c] * 
+                (m[1][0]*m[2][1]*m[3][2] + m[2][0]*m[3][1]*m[1][2] + m[3][0]*m[1][1]*m[2][2]
+                - m[3][0]*m[2][1]*m[1][2] - m[2][0]*m[1][1]*m[3][2] - m[1][0]*m[3][1]*m[2][2]);
+            }
+        }
+    }
     else {
         printf("I can't count with higher dimensions (yet)\n");
         return 1;
@@ -176,7 +206,7 @@ int findTransposedMatrix() {
             t[j][i] = m[i][j];
         }
     }
-    printf("\n (Transponed matrix) \n");
+    printf("\n=== Transponed matrix ===\n");
     printMatrix(t, cols, rows);
 
     return 0;
