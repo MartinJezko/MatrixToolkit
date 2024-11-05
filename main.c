@@ -132,8 +132,8 @@ int findDeterminant() {
     printf("Enter the dimension (m = n) of matrix:");
     scanf("%d", &dim);
     if (dim >= 5) {
-        printf("Can't find determinant for higher than 4 (yet)\n");
-        return 1;
+        printf("Can't find determinant for bigger size 4 (yet)\n");
+        return -999999;
     }
 
     int **m = matrix(dim, dim);
@@ -178,20 +178,42 @@ int findDeterminant() {
             }
         }
     }
-    else {
-        printf("I can't count with higher dimensions (yet)\n");
-        return 1;
-    }
 
-    printf("\n=== D ===\n");
-    printf("Determinant = %d\n", determinant);
 
     matrixDtor(m, dim);
-    return 0;
+    return determinant;
 }
 
 // TODO
 // Solve system of equations
+int solveEquations() {
+    printf("(Rewrite your equations into matrix)\n");
+    printf("DO NOT include the right side of equation\n\n");
+    printf("Example: 1x + 2y + 3z = 0 ==> ( 1 2 3 )\n");
+
+    int det = findDeterminant();
+
+    printf("Now add right side of the equation:\n");
+    int res1;
+    int res2;
+    int res3;
+    printf("Line 1: ... | ");
+    scanf("%d", &res1);
+    printf("Line 2: ... | ");
+    scanf("%d", &res2);
+    printf("Line 3: ... | ");
+    scanf("%d", &res3);
+    // Decide wheter to write results ( ... | RESULT) individually
+    // or in the matrix
+    // Find a solution through determinant
+    // find determinant D_x D_y and D_z
+    // x = D_x / D
+    // y = D_y / D
+    // z = D_z / D
+    (void) det;
+
+    return 0;
+}
 
 int findTransposedMatrix() {
     int rows;
@@ -399,11 +421,18 @@ int main() {
             case 11:    // (and below) - Self explanatory
                 clrscr();
                 printf("\nFIND DETERMINANT OF A MATRIX\n\n");
-                findDeterminant();
+                int det = findDeterminant();
+                if (det == -999999) {
+                } 
+                else {        
+                    printf("\n=== D ===\n");
+                    printf("Determinant = %d\n", det);
+                }
                 break;
             case 12:
                 clrscr();
                 printf("\nSOLVE SYSTEM OF EQUATIONS\n\n");
+                solveEquations();
                 break;
             case 13:
                 clrscr();
