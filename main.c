@@ -127,6 +127,7 @@ void matrixDtor(int **matrix, int rows) {
 }
 
 // SOLVE MATRIX
+// Finds determinant while initializing the matrix is inside the function
 int findDeterminant() {
     int dim;
     printf("Enter the dimension (m = n) of matrix:");
@@ -184,33 +185,103 @@ int findDeterminant() {
     return determinant;
 }
 
+// Finds determinant with externally initialized matrix
+int findDeterminant2(int **m, int dim) {
+    int determinant = 0;
+
+    // Solve determinant for 2x2
+    if (dim == 2) {     
+        determinant = m[0][0]*m[1][1] - m[1][0]*m[0][1];
+    }
+    // Solve determinant for 3x3
+    else if (dim == 3) {
+        determinant = m[0][0]*m[1][1]*m[2][2] + m[1][0]*m[2][1]*m[0][2] + m[2][0]*m[0][1]*m[1][2];
+        determinant -= m[2][0]*m[1][1]*m[0][2] + m[2][1]*m[1][2]*m[0][0] + m[2][2]*m[1][0]*m[0][1];
+    }
+    // Solve determinant for 4x4
+    // (Laplaceo's developement)
+    else if (dim == 4) {
+        for (int c = 0; c < 4; c++) {
+            if (c == 0) {
+                determinant += pow(-1, (c+1)+1)*m[0][c] * 
+                (m[1][1]*m[2][2]*m[3][3] + m[2][1]*m[3][2]*m[1][3] + m[3][1]*m[1][2]*m[2][3]
+                - m[3][1]*m[2][2]*m[1][3] - m[2][1]*m[1][2]*m[3][3] - m[1][1]*m[3][2]*m[2][3]);
+            }
+            else if (c == 1) {
+                determinant += pow(-1, (c+1)+1)*m[0][c] * 
+                (m[1][0]*m[2][2]*m[3][3] + m[2][0]*m[3][2]*m[1][3] + m[3][0]*m[1][2]*m[2][3]
+                - m[3][0]*m[2][2]*m[1][3] - m[2][0]*m[1][2]*m[3][3] - m[1][0]*m[3][2]*m[2][3]);
+            }
+            else if (c == 2) {
+                determinant += pow(-1, (c+1)+1)*m[0][c] * 
+                (m[1][0]*m[2][1]*m[3][3] + m[2][0]*m[3][1]*m[1][3] + m[3][0]*m[1][1]*m[2][3]
+                - m[3][0]*m[2][1]*m[1][3] - m[2][0]*m[1][1]*m[3][3] - m[1][0]*m[3][1]*m[2][3]);
+            }
+            else if (c == 3) {
+                determinant += pow(-1, (c+1)+1)*m[0][c] * 
+                (m[1][0]*m[2][1]*m[3][2] + m[2][0]*m[3][1]*m[1][2] + m[3][0]*m[1][1]*m[2][2]
+                - m[3][0]*m[2][1]*m[1][2] - m[2][0]*m[1][1]*m[3][2] - m[1][0]*m[3][1]*m[2][2]);
+            }
+        }
+    }
+
+    return determinant;
+}
 // TODO
 // Solve system of equations
 int solveEquations() {
     printf("(Rewrite your equations into matrix)\n");
-    printf("DO NOT include the right side of equation\n\n");
-    printf("Example: 1x + 2y + 3z = 0 ==> ( 1 2 3 )\n");
+    printf("DO NOT include the right side of equation\nWrite it in results separately...\n\n");
+    printf("Example:\n---\n");
+    printf("x + 2y + 3z = 4\n");
+    printf("2x + 4y + 5z = 21\n");
+    printf("x + y = 0\n\n");
+    printf("==>\n");
+    printf("| 1 2 3 |\n");
+    printf("| 2 4 5 |\n");
+    printf("| 1 1 0 |\n\n");
+    printf("Res. line 1: 4\nRes. line 2: 21\nRes. line 3: 0\n---\n");
 
-    int det = findDeterminant();
+    int dim;
+    printf("Enter the left matrix\n");
+    printf("Enter dimension (m x n) (m = n): ");
+    scanf("%d", &dim);
+    int **matrix_left = matrix(dim, dim);
+    fillMatrix(matrix_left, dim, dim);
 
-    printf("Now add right side of the equation:\n");
-    int res1;
-    int res2;
-    int res3;
-    printf("Line 1: ... | ");
-    scanf("%d", &res1);
-    printf("Line 2: ... | ");
-    scanf("%d", &res2);
-    printf("Line 3: ... | ");
-    scanf("%d", &res3);
-    // Decide wheter to write results ( ... | RESULT) individually
-    // or in the matrix
-    // Find a solution through determinant
-    // find determinant D_x D_y and D_z
-    // x = D_x / D
-    // y = D_y / D
-    // z = D_z / D
-    (void) det;
+    printf("Enter the results on the right side\n");
+    int **matrix_right = matrix(dim, 1);
+    fillMatrix(matrix_right, dim, 1);
+
+    double results[dim];
+    int **matrix_copy = matrix_left;
+
+    int det_total = findDeterminant2(matrix_left, dim);
+    if (det_total == 0) {
+        printf("Total determinant is 0, operation aborted...\n");
+        return 1;
+    }
+
+    for (int i = 0; i < dim; i++) {
+        for (int j = 0; j < dim; j++) {
+            matrix_copy[j][i] = matrix_right[j][0];
+        }
+        results[i] = findDeterminant2(matrix_copy, dim) / det_total;
+        matrix_copy = matrix_left;
+    }
+
+    printf("\nResults:\n{ ");
+    for (int i = 0; i < dim; i++) {
+        printf("%.2f ", results[i]);
+    }
+    printf(" }\n");
+
+    // !!! Throws segmentation fault
+
+    matrixDtor(matrix_left, dim);
+    matrixDtor(matrix_right, dim);
+    matrixDtor(matrix_copy, dim);
+    
 
     return 0;
 }
