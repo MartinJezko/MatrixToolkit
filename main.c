@@ -13,7 +13,7 @@
 // https://github.com/MartinJezko
 void clrscr()
 {
-    system("@cls||clear");
+    // system("@cls||clear");
 }
 
 int optionMenu() {
@@ -93,6 +93,23 @@ int **matrix(int rows, int cols) {
 
     return m;
     
+}
+
+// Copies a matrix
+int **copyMatrix(int **matrix, int rows, int cols) {
+    int **m_copy = malloc(sizeof(int *) * rows);
+    for (int i = 0; i < rows; i++) {
+        m_copy[i] = malloc(sizeof(int) * cols);
+    }
+
+
+    for (int i = 0; i < rows; i++) {
+
+        for (int j = 0; j < cols; j++) {
+            m_copy[i][j] = matrix[i][j];
+        }
+    }
+    return m_copy;
 }
 
 // Fills matrix with values
@@ -191,72 +208,102 @@ int findDeterminant2(int **m, int dim) {
 
     // Solve determinant for 2x2
     if (dim == 2) {     
-        determinant = m[0][0]*m[1][1] - m[1][0]*m[0][1];
+        determinant = m[0][0] * m[1][1] - m[1][0] * m[0][1];
+        return determinant;
     }
     // Solve determinant for 3x3
     else if (dim == 3) {
-        determinant = m[0][0]*m[1][1]*m[2][2] + m[1][0]*m[2][1]*m[0][2] + m[2][0]*m[0][1]*m[1][2];
-        determinant -= m[2][0]*m[1][1]*m[0][2] + m[2][1]*m[1][2]*m[0][0] + m[2][2]*m[1][0]*m[0][1];
+        determinant = m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1])
+                    - m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0])
+                    + m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
+        return determinant;
     }
     // Solve determinant for 4x4
-    // (Laplaceo's developement)
+    // (Laplace's expansion along the first row)
     else if (dim == 4) {
         for (int c = 0; c < 4; c++) {
+            int cofactor;
+
+            // Calculate cofactor based on column (c)
             if (c == 0) {
-                determinant += pow(-1, (c+1)+1)*m[0][c] * 
-                (m[1][1]*m[2][2]*m[3][3] + m[2][1]*m[3][2]*m[1][3] + m[3][1]*m[1][2]*m[2][3]
-                - m[3][1]*m[2][2]*m[1][3] - m[2][1]*m[1][2]*m[3][3] - m[1][1]*m[3][2]*m[2][3]);
+                cofactor = m[1][1] * (m[2][2] * m[3][3] - m[2][3] * m[3][2])
+                         - m[1][2] * (m[2][1] * m[3][3] - m[2][3] * m[3][1])
+                         + m[1][3] * (m[2][1] * m[3][2] - m[2][2] * m[3][1]);
             }
             else if (c == 1) {
-                determinant += pow(-1, (c+1)+1)*m[0][c] * 
-                (m[1][0]*m[2][2]*m[3][3] + m[2][0]*m[3][2]*m[1][3] + m[3][0]*m[1][2]*m[2][3]
-                - m[3][0]*m[2][2]*m[1][3] - m[2][0]*m[1][2]*m[3][3] - m[1][0]*m[3][2]*m[2][3]);
+                cofactor = m[1][0] * (m[2][2] * m[3][3] - m[2][3] * m[3][2])
+                         - m[1][2] * (m[2][0] * m[3][3] - m[2][3] * m[3][0])
+                         + m[1][3] * (m[2][0] * m[3][2] - m[2][2] * m[3][0]);
             }
             else if (c == 2) {
-                determinant += pow(-1, (c+1)+1)*m[0][c] * 
-                (m[1][0]*m[2][1]*m[3][3] + m[2][0]*m[3][1]*m[1][3] + m[3][0]*m[1][1]*m[2][3]
-                - m[3][0]*m[2][1]*m[1][3] - m[2][0]*m[1][1]*m[3][3] - m[1][0]*m[3][1]*m[2][3]);
+                cofactor = m[1][0] * (m[2][1] * m[3][3] - m[2][3] * m[3][1])
+                         - m[1][1] * (m[2][0] * m[3][3] - m[2][3] * m[3][0])
+                         + m[1][3] * (m[2][0] * m[3][1] - m[2][1] * m[3][0]);
             }
             else if (c == 3) {
-                determinant += pow(-1, (c+1)+1)*m[0][c] * 
-                (m[1][0]*m[2][1]*m[3][2] + m[2][0]*m[3][1]*m[1][2] + m[3][0]*m[1][1]*m[2][2]
-                - m[3][0]*m[2][1]*m[1][2] - m[2][0]*m[1][1]*m[3][2] - m[1][0]*m[3][1]*m[2][2]);
+                cofactor = m[1][0] * (m[2][1] * m[3][2] - m[2][2] * m[3][1])
+                         - m[1][1] * (m[2][0] * m[3][2] - m[2][2] * m[3][0])
+                         + m[1][2] * (m[2][0] * m[3][1] - m[2][1] * m[3][0]);
             }
+
+            // Apply cofactor expansion (sign alternates with each column)
+            determinant += ((c % 2 == 0) ? 1 : -1) * m[0][c] * cofactor;
         }
+        return determinant;
     }
 
     return determinant;
 }
+
 // TODO
 // Solve system of equations
 int solveEquations() {
-    printf("(Rewrite your equations into matrix)\n");
-    printf("DO NOT include the right side of equation\nWrite it in results separately...\n\n");
-    printf("Example:\n---\n");
-    printf("x + 2y + 3z = 4\n");
-    printf("2x + 4y + 5z = 21\n");
-    printf("x + y = 0\n\n");
-    printf("==>\n");
-    printf("| 1 2 3 |\n");
-    printf("| 2 4 5 |\n");
-    printf("| 1 1 0 |\n\n");
-    printf("Res. line 1: 4\nRes. line 2: 21\nRes. line 3: 0\n---\n");
 
+    // Instructions
+    {
+        printf("(Rewrite your equations into matrix)\n");
+        printf("DO NOT include the right side of equation\nWrite it in results separately...\n\n");
+        printf("Example:\n---\n");
+        printf("x + 2y + 3z = 4\n");
+        printf("2x + 4y + 5z = 21\n");
+        printf("x + y = 0\n\n");
+        printf("==>\n");
+        printf("| 1 2 3 |\n");
+        printf("| 2 4 5 |\n");
+        printf("| 1 1 0 |\n\n");
+        printf("Res. line 1: 4\nRes. line 2: 21\nRes. line 3: 0\n---\n");
+    }
+
+    // Process
     int dim;
     printf("Enter the left matrix\n");
     printf("Enter dimension (m x n) (m = n): ");
     scanf("%d", &dim);
+    
+    // Init and print out left side
     int **matrix_left = matrix(dim, dim);
     fillMatrix(matrix_left, dim, dim);
+    printf("Left matrix:\n");
+    printMatrix(matrix_left, dim, dim);
 
+    // Init and print out right side
     printf("Enter the results on the right side\n");
     int **matrix_right = matrix(dim, 1);
     fillMatrix(matrix_right, dim, 1);
+    printf("Right (results) matrix:\n");
+    printMatrix(matrix_right, dim, 1);
 
+    // Init array for results ( {x, y, z, ...} )
     double results[dim];
-    int **matrix_copy = matrix_left;
 
-    int det_total = findDeterminant2(matrix_left, dim);
+    // Copy of the left side
+    int **matrix_copy = copyMatrix(matrix_left, dim, dim);
+
+    // Find determinant of the left side
+    int det_total = findDeterminant2(matrix_copy, dim);
+    int det_position;
+    // printf("### (Determinant of left matrix: %d)\n", det_total);
+
     if (det_total == 0) {
         printf("Total determinant is 0, operation aborted...\n");
         return 1;
@@ -266,8 +313,14 @@ int solveEquations() {
         for (int j = 0; j < dim; j++) {
             matrix_copy[j][i] = matrix_right[j][0];
         }
-        results[i] = findDeterminant2(matrix_copy, dim) / det_total;
-        matrix_copy = matrix_left;
+
+        det_position = findDeterminant2(matrix_copy, dim);
+        printf("Determinant at [%d]: %d\n", i, det_position);
+        printf("Determinant total:   %d\n", det_total);
+        printMatrix(matrix_copy, dim, dim);
+        printf("------------\n");
+        results[i] = (double) det_position / (double) det_total;
+        matrix_copy = copyMatrix(matrix_left, dim, dim);
     }
 
     printf("\nResults:\n{ ");
