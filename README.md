@@ -36,3 +36,6 @@ If you want to edit the compile config then edit the "Makefile" file.
 
 ---
 
+### To-do list
+- Fix mistakes in `solveEquations()` (sometimes results aren't correct, need to find out why)
+
