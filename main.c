@@ -13,7 +13,7 @@
 // https://github.com/MartinJezko
 void clrscr()
 {
-    // system("@cls||clear");
+    system("@cls||clear");
 }
 
 int optionMenu() {
@@ -258,6 +258,8 @@ int findDeterminant2(int **m, int dim) {
 // TODO
 // Solve system of equations
 int solveEquations() {
+    
+    clrscr(); 
 
     // Instructions
     {
@@ -315,10 +317,6 @@ int solveEquations() {
         }
 
         det_position = findDeterminant2(matrix_copy, dim);
-        printf("Determinant at [%d]: %d\n", i, det_position);
-        printf("Determinant total:   %d\n", det_total);
-        printMatrix(matrix_copy, dim, dim);
-        printf("------------\n");
         results[i] = (double) det_position / (double) det_total;
         matrix_copy = copyMatrix(matrix_left, dim, dim);
     }
